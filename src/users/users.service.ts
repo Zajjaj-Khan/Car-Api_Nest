@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './user.entity';
@@ -14,9 +14,12 @@ export class UsersService {
      }
 
      findOne(id:number){
+      if(!id){
+          throw new UnauthorizedException('user not found');
+      }
       return this.repo.findOneBy({id});
      }
-
+ 
      find(email:string){
       return this.repo.find({where:{email}});
      }
